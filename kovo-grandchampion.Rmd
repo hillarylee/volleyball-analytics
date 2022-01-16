@@ -1,0 +1,49 @@
+---
+title: "How the type of ball changes defense in volleyball"
+subtitle: "Through the example of the Korean Volleyball League (KOVO)"
+author: "Hillary Lee"
+date: "1/16/2022"
+output: html_document
+---
+
+## Introduction and Data
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library}
+library(tidyverse)
+library(stringr)
+library(robotstxt)
+library(rvest)
+library(httr)
+```
+
+The Korean volleyball league uses its own official game ball made by 'Star',
+which is different from the Mikasa that is used in most FIVB-regulated games.
+
+'New Champion VB215-34' was used from 2005 until the 2009-10 season, when it was 
+changed to 'Grand Champion VB225-34'. According to the Korean Volleyball 
+Federation, "elasticity (of the ball) was reinforced...by mixing natural rubber 
+and synthetic rubber".
+
+I wanted to quantify how elasticity changed by looking at how it affected player
+statistics in passing/reception, serving, and digging.
+
+## Methodology
+
+I will use web scraping to collect data from [KOVO](https://www.kovo.co.kr/).
+
+
+
+## Data Analysis
+
+## Results
+
+## Discussion
+
+## References
+
+- [Naver Sports Article: V-League changes official game ball](https://sports.news.naver.com/news?oid=109&aid=0002125184)
+

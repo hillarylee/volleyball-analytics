@@ -31,19 +31,22 @@ Federation, "elasticity (of the ball) was reinforced...by mixing natural rubber
 and synthetic rubber".
 
 I wanted to quantify how elasticity changed by looking at how it affected player
-statistics in passing/reception, serving, and digging.
+statistics in terms of passing (reception).
 
 ## Methodology
 
 I will use web scraping to collect data from [KOVO](https://www.kovo.co.kr/).
 
-I collected four data sets:
-- Reception from season 2005 to 2009-10.
-- Reception from season 2009 to 2020-21.
-- Reception from season 2009-10.
-- Reception from season 2010-11.
+First I collected the passing statistics for each team according to the following seasons:
+* Season 2005 to 2009-10.
+* Season 2009 to 2020-21.
+* Season 2009-10.
+* Season 2010-11.
 
-```{r data}
+By observing before and after 2010, which was the game ball was changed, we can
+see the general change.
+
+```{r reception-by-team}
 url <- "https://www.kovo.co.kr/stats/42001_team-totalrecord.asp?s_part=2&spart=&s_season=001&s_pr=201%7C1&e_season=006&e_pr=203%7C1&part=r"
 
 reception_0510 <- read_html(url) %>% 
@@ -75,7 +78,7 @@ url <- "https://www.kovo.co.kr/stats/42001_team-totalrecord.asp?s_part=2&spart=&
 
 reception_1021 <- read_html(url) %>% 
   html_nodes(css = "table") %>% 
-  html_table()
+  html_table() 
 
 reception_1021[[1]] %>% 
   as_tibble()
@@ -84,6 +87,26 @@ reception_1021[[1]] %>%
 The last column (reception efficiency, 리시브효율) was calculated incorrectly 
 because of a change in statistical calculation method on the website, so I 
 deleted and recalculated it.
+
+I also collected the data of best receiver by season from 2005 to 2019-20.
+I renamed the column names from Korean to English, following the convention of FIVB VIS.
+
+```{r best receiver}
+url <- "https://www.kovo.co.kr/stats/46301_previous-defend.asp?s_part=2"
+
+best_receiver <- read_html(url) %>% 
+  html_nodes(css = "table") %>% 
+  html_table() 
+
+best_receiver[[3]] %>% 
+  as_tibble() %>% 
+  select(-"팀", -"경기수", -"세트수", -"세트당") %>% 
+  rename("season" = "대회", "player" = "선수",
+         "attempts" = "시도", "excellent" = "정확", "error" = "실패") %>% 
+  mutate(success_rate = excellent / attempts,
+         efficienty_rate = (excellent - error) / attempts)
+```
+
 
 ## Data Analysis
 
